@@ -1,0 +1,13 @@
+FROM alpine:latest
+
+EXPOSE 9999
+
+RUN apk add socat gcc musl-dev
+
+WORKDIR /app
+
+COPY ./broken_terminal.c ./flag.txt ./
+
+RUN gcc -o broken_terminal broken_terminal.c
+
+CMD socat TCP4-LISTEN:9999,fork EXEC:/app/broken_terminal

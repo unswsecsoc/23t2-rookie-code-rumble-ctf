@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Skeleton Key</title>
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+
+<body>
+
+  <p>
+    Here is a JavaScript algorithm the aliens implemented to convert an array to numbered pairs and vice versa.
+    They challenge you to break it, so why not have a try?<br>
+    Here is the code running on the server:
+  </p>
+
+  <pre><code class="language-js">
+const createNumberedPairs = (arr) => {
+  const indexes = Object.keys(arr);
+  const values = arr;
+
+  const result = [];
+
+  for (let i = 0; i < indexes.length; i++) {
+    result.push([indexes[i], values[i]]);
+  }
+
+  return result;
+};
+
+const numberedPairsToArray = (numberedPairs) => {
+  const arr = [];
+
+  for (let i = 0; i < numberedPairs.length; i++) {
+    const currentPair = numberedPairs[i];
+    arr.push(currentPair[1]);
+  }
+
+  return arr;
+};
+
+const challenge = (payload) => {
+  const beforeSnapshot = JSON.stringify(payload);
+
+  const pairs = createNumberedPairs(payload);
+  const recovered = numberedPairsToArray(pairs);
+
+  const afterSnapshot = JSON.stringify(recovered);
+
+  // Recovered should be the same as payload, right?
+  if (beforeSnapshot !== afterSnapshot) {
+    return "Congrats! You broke my code somehow. Have a flag: " + FLAG;
+  } else {
+    return "My code behaved normally! Value: " + afterSnapshot;
+  }
+};
+    </code></pre>
+
+  <p>
+    Here is a form to try out the <code>challenge</code> function! Enter an array (use JSON encoding) in the textarea,
+    and press submit to run the code!
+  </p>
+
+  <textarea id="txtarea">[1,2,3]</textarea>
+
+  <button id="submit">Submit!</button>
+
+  <pre id="result">Press submit to send the data to the challenge() function</pre>
+
+  <script>
+    hljs.highlightAll();
+
+    const txtarea = document.getElementById('txtarea');
+    const submit = document.getElementById('submit');
+    const result = document.getElementById('result');
+
+    submit.onclick = () => {
+      fetch('/api/challenge', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: txtarea.value
+      }).then(resp => resp.text()).then(t => {
+        if (t.startsWith('My code behaved normally!')) {
+          result.style.color = 'green';
+        } else {
+          result.style.color = 'red';
+        }
+        result.innerText = t;
+      }).catch(e => {
+        result.style.color = 'red';
+        result.innerText = e.toString();
+      });
+    }
+  </script>
+</body>
+
+</html>

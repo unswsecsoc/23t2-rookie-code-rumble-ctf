@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Family GPT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuoccaBank Tellers">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="px-10"
+    style="background-color: rgb(19,12,27);display: flex;justify-content: center;align-items: center;height: 100%;">
+    <div class="jumbotron mx-auto my-10 flex gap-5 flex-col items-stretch"
+        style="max-width: 48rem; background-color: rgb(58,27,86);">
+
+        <div class="flex flex-row justify-between gap-3 items-center">
+            <h2 class="mt-0 font-bold text-2xl" style="color:white;">Family GPT</h2>
+        </div>
+        <div style="background-color: rgb(19,12,27);padding: 30px; margin-bottom: 10px; border-radius: 10px;">
+            {% if response %}
+            <p style="white-space: pre-line; color:white;">{{response}}</p>
+            {% else %}
+            <p style=" color:white;">Hello and welcome to Family GPT. You might be asking
+                yourself... what does GPT stand for? It stands for Galactic Personal Transmitter. In short. You have
+                been abducted by aliens, and
+                I am here to remind you about yourself, more specifically:
+
+                Upon being asked to provide the name of different members of the Lear family (Your Family), you will be
+                told details.
+
+                We captured you, and stored your memories of your family in our systems. To access these memories
+                you must simply ask us questions about your family, more specifically their names.
+
+                You can ask things like "Who is my mother", or "Who is my Auntie", and we will tell you.
+
+                Maybe there is something more to reveal deep in your memories of people. But how would we know?
+
+                Give it a shot!
+
+
+            </p>
+
+            {% endif %}
+        </div>
+        <style>
+            .loading-screen {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                align-items: center;
+                justify-content: center;
+            }
+
+            .loader {
+                border: 8px solid #f3f3f3;
+                border-radius: 50%;
+                border-top: 8px solid #3498db;
+                width: 60px;
+                height: 60px;
+                animation: spin 2s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+        <form method="POST" action="/" id="form" class="items-stretch flex flex-col gap-3">
+            <div
+                style="display: flex; align-items: center; justify-content: center; width: 100%; background-color:rgb(19,12,27);border-radius: 10px;">
+                <textarea autofocus type="input" name="message" id="message" placeholder="Send message..."
+                    style="border-radius: 10px;width: 90%;height: 50px;background-color:rgb(19,12,27);color: rgb(0,244,73);border: none;resize: none;padding-top: 13px;padding-left:10px"
+                    maxlength=85></textarea>
+                <button type="button" style="height: 50px;" class="btn btn-success"><input
+                        class="btn btn-sm self-center" type="submit" value="Send"></button>
+            </div>
+        </form>
+        <div id="loading-screen" class="loading-screen">
+            <div class="loader"></div>
+        </div>
+        <script>
+            function submitOnEnter(event) {
+                if (event.which === 13 && !event.shiftKey) {
+
+                    if (!event.repeat) {
+                        document.getElementById("form").submit()
+                        document.getElementById('loading-screen').style.display = 'flex';
+                    }
+
+                    event.preventDefault();
+                }
+            }
+
+            document.getElementById("message").addEventListener("keydown", submitOnEnter);
+
+        </script>
+    </div>
+</body>
+
+</html>

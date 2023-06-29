@@ -1,0 +1,5 @@
+# Prevent committing access tokens
+.env
+
+**/__pycache__/
+**/node_modules/
